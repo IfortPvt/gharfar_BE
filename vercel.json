@@ -1,13 +1,9 @@
 {
   "version": 2,
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs20.x",
-      "maxDuration": 60,
-      "memory": 1024
-    }
-  },
+  "builds": [
+  { "src": "api/**/*.js", "use": "@vercel/node@2.15.10" }
+  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index.js" }
+  { "source": "/(.*)", "destination": "/api/$1" }
   ]
 }
