@@ -1,0 +1,73 @@
+{
+  "info": {
+    "name": "Gharfar Calendar Sync",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "0c0d91a4-5e7a-4d27-9a11-gharfar-calendar"
+  },
+  "item": [
+    {
+      "name": "Add External Calendar",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/listings/{{listingId}}/calendars",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","listings","{{listingId}}","calendars"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"url\": \"https://example.com/airbnb.ics\",\n  \"provider\": \"airbnb\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Sync Calendar Now",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/listings/{{listingId}}/calendars/{{calendarId}}/sync",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","listings","{{listingId}}","calendars","{{calendarId}}","sync"]
+        }
+      }
+    },
+    {
+      "name": "Remove External Calendar",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/listings/{{listingId}}/calendars/{{calendarId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","listings","{{listingId}}","calendars","{{calendarId}}"]
+        }
+      }
+    },
+    {
+      "name": "Export Listing ICS",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/listings/{{listingId}}/calendar.ics",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","listings","{{listingId}}","calendar.ics"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" },
+    { "key": "listingId", "value": "" },
+    { "key": "calendarId", "value": "" }
+  ]
+}

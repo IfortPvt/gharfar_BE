@@ -1,0 +1,252 @@
+# Verify Token API Implementation
+
+## Overview
+The verify-token API validates JWT tokens and returns an authentication model with user information and token details.
+
+## Endpoint
+```
+POST /api/users/verify-token
+```
+
+## Request Format
+```typescript
+interface VerifyTokenRequest {
+  api_token: string;  // JWT token to verify
+}
+```
+
+### Example Request
+```json
+{
+  "api_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+## Response Format
+```typescript
+interface AuthModel {
+  api_token: string;      // The verified token
+  refreshToken?: string;  // New refresh token (30-day expiry)
+}
+
+interface VerifyTokenResponse {
+  success: boolean;
+  message: string;
+  data: AuthModel;
+  user: {
+    id: string;
+    email: string;
+    fullName: string;
+    role: string;
+    status: string;
+    profileImage?: string;
+    verifications: {
+      emailVerified: boolean;
+      phoneVerified: boolean;
+      idVerified: boolean;
+    };
+  };
+  tokenInfo: {
+    issuedAt: Date;
+    expiresAt: Date;
+    validFor: string;  // Human readable format like "168 hours"
+  };
+}
+```
+
+### Example Response (Success)
+```json
+{
+  "success": true,
+  "message": "Token verified successfully",
+  "data": {
+    "api_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  },
+  "user": {
+    "id": "64f123abc456789012345678",
+    "email": "user@example.com",
+    "fullName": "John Doe",
+    "role": "guest",
+    "status": "active",
+    "profileImage": "/uploads/profiles/user_123.jpg",
+    "verifications": {
+      "emailVerified": true,
+      "phoneVerified": false,
+      "idVerified": false
+    }
+  },
+  "tokenInfo": {
+    "issuedAt": "2024-07-20T10:30:00Z",
+    "expiresAt": "2024-07-27T10:30:00Z",
+    "validFor": "168 hours"
+  }
+}
+```
+
+## Error Responses
+
+### Invalid Token Format
+```json
+{
+  "success": false,
+  "message": "Invalid token format or signature."
+}
+```
+
+### Expired Token
+```json
+{
+  "success": false,
+  "message": "Token has expired. Please login again."
+}
+```
+
+### User Not Found
+```json
+{
+  "success": false,
+  "message": "User not found. Token may be invalid."
+}
+```
+
+### Account Suspended
+```json
+{
+  "success": false,
+  "message": "Account suspended: Policy violation"
+}
+```
+
+### Missing Token
+```json
+{
+  "success": false,
+  "message": "API token is required"
+}
+```
+
+## Status Codes
+- `200` - Token verified successfully
+- `400` - Invalid request (validation errors)
+- `401` - Invalid or expired token
+- `403` - Account suspended/banned or login restricted
+- `500` - Internal server error
+
+## Implementation Features
+
+### Security Features
+1. **JWT Verification**: Validates token signature and expiry
+2. **User Status Check**: Ensures account is active
+3. **Permission Check**: Verifies user has login permissions
+4. **Auto-Reactivation**: Reactivates users if suspension period expired
+5. **Activity Tracking**: Updates user's last active time
+
+### Enhanced Security
+- **Refresh Token**: Generates new 30-day refresh token for enhanced security
+- **Token Rotation**: Can be extended to implement token rotation
+- **Device Tracking**: Maintains user activity logs
+
+### Error Handling
+- Comprehensive error messages for different failure scenarios
+- Proper HTTP status codes
+- Validation using Joi schema
+
+## Usage Examples
+
+### Frontend Integration (JavaScript)
+```javascript
+async function verifyUserToken(token) {
+  try {
+    const response = await fetch('/api/users/verify-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ api_token: token })
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      // Token is valid, user is authenticated
+      return {
+        isValid: true,
+        user: result.user,
+        tokens: result.data
+      };
+    } else {
+      // Token is invalid
+      return {
+        isValid: false,
+        error: result.message
+      };
+    }
+  } catch (error) {
+    return {
+      isValid: false,
+      error: 'Network error or server unavailable'
+    };
+  }
+}
+```
+
+### Node.js Integration
+```javascript
+const axios = require('axios');
+
+async function verifyToken(apiToken) {
+  try {
+    const response = await axios.post('/api/users/verify-token', {
+      api_token: apiToken
+    });
+    
+    return {
+      valid: true,
+      user: response.data.user,
+      authModel: response.data.data
+    };
+  } catch (error) {
+    return {
+      valid: false,
+      error: error.response?.data?.message || error.message
+    };
+  }
+}
+```
+
+## Testing
+
+Run the test file to verify the implementation:
+```bash
+node test-verify-token.js
+```
+
+This will test:
+1. Valid token verification
+2. Invalid token handling
+3. Missing token validation
+4. Response structure validation
+
+## Integration Notes
+
+1. **No Authentication Required**: This endpoint is public and doesn't require authentication middleware
+2. **Token Format**: Expects JWT tokens generated by the login endpoint
+3. **User Activity**: Updates user's last active time on successful verification
+4. **Refresh Token**: Optional feature for enhanced security workflows
+5. **Status Validation**: Checks user account status and permissions before verification
+
+## Security Considerations
+
+1. **Rate Limiting**: Consider implementing rate limiting on this endpoint
+2. **Token Blacklisting**: Can be extended to support token blacklisting
+3. **Audit Logging**: Consider logging token verification attempts
+4. **IP Validation**: Can be enhanced with IP-based validation
+5. **Device Fingerprinting**: Can be extended with device fingerprinting
+
+## Future Enhancements
+
+1. **Token Refresh Flow**: Implement automatic token refresh using refresh tokens
+2. **Multi-Device Support**: Track and manage tokens across multiple devices
+3. **Token Revocation**: Add ability to revoke specific tokens
+4. **Advanced Analytics**: Track token usage patterns and security metrics

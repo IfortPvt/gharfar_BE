@@ -1,0 +1,657 @@
+{
+	"info": {
+		"_postman_id": "host-portal-collection-id",
+		"name": "Complete_Part_5_Host_Portal",
+		"description": "Comprehensive Host Portal API Collection for Gharfar - Complete host dashboard, analytics, booking management, earnings, and all host-specific features",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "host_token",
+			"value": "",
+			"type": "string",
+			"description": "JWT token for authenticated host"
+		},
+		{
+			"key": "sample_listing_id",
+			"value": "listing_001",
+			"type": "string"
+		},
+		{
+			"key": "sample_booking_id",
+			"value": "booking_001",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "🏠 Host Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard Overview",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/dashboard/overview",
+							"host": ["{{base_url}}"],
+							"path": ["host", "dashboard", "overview"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dashboard Metrics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/dashboard/metrics?period=month",
+							"host": ["{{base_url}}"],
+							"path": ["host", "dashboard", "metrics"],
+							"query": [
+								{
+									"key": "period",
+									"value": "month",
+									"description": "week|month|quarter|year"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📅 Host Booking Management",
+			"item": [
+				{
+					"name": "Get All Host Bookings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/bookings?page=1&limit=20&status=all&sortBy=checkInDate&sortOrder=asc",
+							"host": ["{{base_url}}"],
+							"path": ["host", "bookings"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "status",
+									"value": "all",
+									"description": "all|pending|confirmed|cancelled|completed"
+								},
+								{
+									"key": "listingId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "checkInDate",
+									"description": "checkInDate|checkOutDate|createdAt|status"
+								},
+								{
+									"key": "sortOrder",
+									"value": "asc",
+									"description": "asc|desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/bookings/stats?period=month",
+							"host": ["{{base_url}}"],
+							"path": ["host", "bookings", "stats"],
+							"query": [
+								{
+									"key": "period",
+									"value": "month"
+								},
+								{
+									"key": "listingId",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Today's Check-ins",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/bookings/today/checkins",
+							"host": ["{{base_url}}"],
+							"path": ["host", "bookings", "today", "checkins"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Today's Check-outs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/bookings/today/checkouts",
+							"host": ["{{base_url}}"],
+							"path": ["host", "bookings", "today", "checkouts"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📅 Host Calendar Management",
+			"item": [
+				{
+					"name": "Get Host Calendar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/calendar?month=2024-12&listingId={{sample_listing_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["host", "calendar"],
+							"query": [
+								{
+									"key": "month",
+									"value": "2024-12",
+									"description": "Format: YYYY-MM"
+								},
+								{
+									"key": "listingId",
+									"value": "{{sample_listing_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Calendar Availability",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"listingId\": \"{{sample_listing_id}}\",\n  \"dates\": [\n    \"2024-12-25\",\n    \"2024-12-26\",\n    \"2024-12-31\"\n  ],\n  \"isAvailable\": false,\n  \"specialPricing\": {\n    \"2024-12-31\": 299.99\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/host/calendar/availability",
+							"host": ["{{base_url}}"],
+							"path": ["host", "calendar", "availability"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "💰 Host Earnings & Financial",
+			"item": [
+				{
+					"name": "Get Host Earnings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/earnings?period=month&year=2024&month=12",
+							"host": ["{{base_url}}"],
+							"path": ["host", "earnings"],
+							"query": [
+								{
+									"key": "period",
+									"value": "month",
+									"description": "week|month|quarter|year"
+								},
+								{
+									"key": "year",
+									"value": "2024"
+								},
+								{
+									"key": "month",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Host Payouts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/payouts?page=1&limit=20&status=all",
+							"host": ["{{base_url}}"],
+							"path": ["host", "payouts"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "status",
+									"value": "all",
+									"description": "all|pending|processing|completed|failed"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "👤 Host Profile & Settings",
+			"item": [
+				{
+					"name": "Get Host Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/profile",
+							"host": ["{{base_url}}"],
+							"path": ["host", "profile"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Host Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bio\": \"Experienced host providing comfortable stays in downtown area\",\n  \"languages\": [\"English\", \"Spanish\", \"French\"],\n  \"responseTime\": \"within an hour\",\n  \"hostingSince\": \"2020-01-15\",\n  \"verifiedIdentity\": true,\n  \"superhostStatus\": false,\n  \"preferences\": {\n    \"instantBook\": true,\n    \"minimumStay\": 2,\n    \"maximumStay\": 30,\n    \"checkInTime\": \"15:00\",\n    \"checkOutTime\": \"11:00\",\n    \"houseRules\": [\n      \"No smoking\",\n      \"No pets\",\n      \"No parties or events\"\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/host/profile",
+							"host": ["{{base_url}}"],
+							"path": ["host", "profile"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "⭐ Host Reviews & Ratings",
+			"item": [
+				{
+					"name": "Get Host Reviews",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/reviews?page=1&limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["host", "reviews"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "listingId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "rating",
+									"value": "",
+									"disabled": true,
+									"description": "Filter by rating (1-5)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reply to Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reply\": \"Thank you for your wonderful review! We're so glad you enjoyed your stay and felt comfortable in our space. We look forward to hosting you again in the future!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/host/reviews/review_001/reply",
+							"host": ["{{base_url}}"],
+							"path": ["host", "reviews", "review_001", "reply"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "💬 Host Messages & Communication",
+			"item": [
+				{
+					"name": "Get Host Messages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/messages?page=1&limit=20&status=all",
+							"host": ["{{base_url}}"],
+							"path": ["host", "messages"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "status",
+									"value": "all",
+									"description": "all|unread|read|archived"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message to Guest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"recipientId\": \"guest_001\",\n  \"bookingId\": \"{{sample_booking_id}}\",\n  \"message\": \"Hi! Thank you for booking our place. I'm excited to host you! Check-in instructions will be sent 24 hours before your arrival. Please let me know if you have any questions.\",\n  \"messageType\": \"booking_confirmation\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/host/messages",
+							"host": ["{{base_url}}"],
+							"path": ["host", "messages"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📊 Host Reports & Analytics",
+			"item": [
+				{
+					"name": "Get Performance Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/reports/performance?period=month",
+							"host": ["{{base_url}}"],
+							"path": ["host", "reports", "performance"],
+							"query": [
+								{
+									"key": "period",
+									"value": "month"
+								},
+								{
+									"key": "startDate",
+									"value": "",
+									"disabled": true,
+									"description": "Format: YYYY-MM-DD"
+								},
+								{
+									"key": "endDate",
+									"value": "",
+									"disabled": true,
+									"description": "Format: YYYY-MM-DD"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Financial Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{host_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/host/reports/financial?period=month&year=2024&month=12",
+							"host": ["{{base_url}}"],
+							"path": ["host", "reports", "financial"],
+							"query": [
+								{
+									"key": "period",
+									"value": "month"
+								},
+								{
+									"key": "year",
+									"value": "2024"
+								},
+								{
+									"key": "month",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Check if host token exists and is not expired",
+					"const token = pm.environment.get('host_token') || pm.globals.get('host_token');",
+					"if (!token) {",
+					"    console.log('⚠️  Host token not found. Please login as a host first.');",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global test script for all Host Portal requests",
+					"pm.test('Response time is reasonable', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+					"});",
+					"",
+					"pm.test('Response has correct content type', function () {",
+					"    pm.expect(pm.response.headers.get('content-type')).to.include('application/json');",
+					"});",
+					"",
+					"if (pm.response.code === 200) {",
+					"    pm.test('Response has success property', function () {",
+					"        const responseJson = pm.response.json();",
+					"        pm.expect(responseJson).to.have.property('success');",
+					"        pm.expect(responseJson.success).to.be.true;",
+					"    });",
+					"}",
+					"",
+					"// Handle authentication errors",
+					"if (pm.response.code === 401) {",
+					"    pm.test('Unauthorized - Token may be expired', function () {",
+					"        console.log('🔐 Authentication failed. Please login again.');",
+					"    });",
+					"}",
+					"",
+					"// Handle authorization errors",
+					"if (pm.response.code === 403) {",
+					"    pm.test('Forbidden - Insufficient privileges', function () {",
+					"        console.log('⛔ Access denied. Host role required.');",
+					"    });",
+					"}"
+				]
+			}
+		}
+	]
+}

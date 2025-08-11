@@ -1,0 +1,1024 @@
+{
+	"info": {
+		"_postman_id": "gharfar-listing-images-collection",
+		"name": "Gharfar - Listing Images Management",
+		"description": "Complete API collection for managing listing images including upload, update, delete, reorder, and feature/main image functionality for both hosts and admins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "gharfar-team"
+	},
+	"item": [
+		{
+			"name": "🔐 Authentication",
+			"item": [
+				{
+					"name": "Host Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"host@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@gharfar.com\",\n  \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🏠 HOST - Image Management",
+			"item": [
+				{
+					"name": "Upload Multiple Images",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{hostToken}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"description": "Upload up to 10 images for the listing"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"description": "Second image file"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"description": "Third image file"
+								},
+								{
+									"key": "descriptions",
+									"value": "[\"Living room with modern furniture\", \"Spacious bedroom with king size bed\", \"Fully equipped kitchen\"]",
+									"type": "text",
+									"description": "Array of descriptions for each image"
+								},
+								{
+									"key": "tags",
+									"value": "[\"living-room\", \"bedroom\", \"kitchen\"]",
+									"type": "text",
+									"description": "Array of tags for categorizing images"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images"
+							]
+						},
+						"description": "Upload multiple images to a listing. Supports up to 10 images per request."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Listing with Images",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{hostToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}"
+							]
+						},
+						"description": "Get listing details including all images. Images are included in the listing response."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Image Order",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{hostToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imageOrder\": [\n    {\n      \"imageId\": \"675abc123def456789012345\",\n      \"order\": 1\n    },\n    {\n      \"imageId\": \"675abc123def456789012346\",\n      \"order\": 2\n    },\n    {\n      \"imageId\": \"675abc123def456789012347\",\n      \"order\": 3\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images",
+								"order"
+							]
+						},
+						"description": "Reorder images for a listing. First image in order becomes the main display image."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Single Image",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{hostToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Updated: Beautiful living room with panoramic city views\",\n  \"tags\": [\"living-room\", \"city-view\", \"modern\", \"spacious\"],\n  \"isFeatured\": true,\n  \"isMainImage\": false,\n  \"altText\": \"Living room with floor-to-ceiling windows showing city skyline\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images/{{imageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images",
+								"{{imageId}}"
+							]
+						},
+						"description": "Update image metadata, description, tags, and featured/main status"
+					},
+					"response": []
+				},
+				{
+					"name": "Set Featured Image",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{hostToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isFeatured\": true,\n  \"isMainImage\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images/{{imageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images",
+								"{{imageId}}"
+							]
+						},
+						"description": "Mark an image as featured (will appear in search results and listing previews)"
+					},
+					"response": []
+				},
+				{
+					"name": "Set Main Image",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{hostToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isFeatured\": false,\n  \"isMainImage\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images/{{imageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images",
+								"{{imageId}}"
+							]
+						},
+						"description": "Set an image as the main listing image (primary display image)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Single Image",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{hostToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images/{{imageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images",
+								"{{imageId}}"
+							]
+						},
+						"description": "Delete a specific image from the listing"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Delete Images",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{hostToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imageIds\": [\n    \"675abc123def456789012345\",\n    \"675abc123def456789012346\",\n    \"675abc123def456789012347\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images/bulk-delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images",
+								"bulk-delete"
+							]
+						},
+						"description": "Delete multiple images from the listing at once"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "⚡ ADMIN - Image Management",
+			"item": [
+				{
+					"name": "Get Listing with Images (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/listings/{{listingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"listings",
+								"{{listingId}}"
+							]
+						},
+						"description": "Admin can view listing details including all images with admin-specific metadata"
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Upload Images to Listing",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"description": "Upload images as admin"
+								},
+								{
+									"key": "images",
+									"type": "file"
+								},
+								{
+									"key": "descriptions",
+									"value": "[\"Admin uploaded: Luxurious bedroom\", \"Admin uploaded: Modern bathroom\"]",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "[\"admin-uploaded\", \"verified\", \"professional\"]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images"
+							]
+						},
+						"description": "Admin can upload images to any listing using the standard listing endpoint with admin token"
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Update Image",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Admin Updated: Professional photography of master bedroom\",\n  \"tags\": [\"bedroom\", \"master\", \"professional\", \"verified\"],\n  \"isFeatured\": true,\n  \"isMainImage\": true,\n  \"altText\": \"Master bedroom with king bed and ensuite bathroom\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images/{{imageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images",
+								"{{imageId}}"
+							]
+						},
+						"description": "Admin can update any image using the standard listing endpoint with admin permissions"
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Get All Listings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/listings?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"listings"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Get all listings in the platform with images included (admin view)"
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Create Listing for Host",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"description": "Upload images while creating listing"
+								},
+								{
+									"key": "images",
+									"type": "file"
+								},
+								{
+									"key": "title",
+									"value": "Admin Created: Luxury Downtown Apartment",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Beautiful apartment created by admin for host",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "150",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "{\"address\":\"123 Main St\",\"city\":\"New York\",\"state\":\"NY\",\"country\":\"USA\"}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/listings/host/{{hostId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"listings",
+								"host",
+								"{{hostId}}"
+							]
+						},
+						"description": "Admin can create a listing for a specific host with images included"
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Delete Image",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/{{listingId}}/images/{{imageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"{{listingId}}",
+								"images",
+								"{{imageId}}"
+							]
+						},
+						"description": "Admin can delete any image using the standard listing endpoint with admin permissions"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Image Analytics (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/listings/images/analytics?startDate=2024-01-01&endDate=2024-12-31&status=all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"listings",
+								"images",
+								"analytics"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-12-31"
+								},
+								{
+									"key": "status",
+									"value": "all"
+								}
+							]
+						},
+						"description": "Get comprehensive analytics on image uploads, approvals, rejections, and trends"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📊 Image Analytics & Reports",
+			"item": [
+				{
+					"name": "Get Image Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/images/statistics",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"images",
+								"statistics"
+							]
+						},
+						"description": "Get overall image statistics: total uploads, approvals, rejections, etc."
+					},
+					"response": []
+				},
+				{
+					"name": "Images Pending Review",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/images/pending-review?page=1&limit=50&priority=high",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"images",
+								"pending-review"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "priority",
+									"value": "high"
+								}
+							]
+						},
+						"description": "Get all images that are pending admin review"
+					},
+					"response": []
+				},
+				{
+					"name": "Flagged Images Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/images/flagged?reason=inappropriate&severity=high",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"images",
+								"flagged"
+							],
+							"query": [
+								{
+									"key": "reason",
+									"value": "inappropriate"
+								},
+								{
+									"key": "severity",
+									"value": "high"
+								}
+							]
+						},
+						"description": "Get all flagged images with filtering options"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🔍 Search & Filter Images",
+			"item": [
+				{
+					"name": "Search Images by Tags",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{hostToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/listings/images/search?tags=bedroom,modern&isFeatured=true&page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"listings",
+								"images",
+								"search"
+							],
+							"query": [
+								{
+									"key": "tags",
+									"value": "bedroom,modern"
+								},
+								{
+									"key": "isFeatured",
+									"value": "true"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Search images across all listings by tags, featured status, etc."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Images by Date Range",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/images/filter?startDate=2024-01-01&endDate=2024-12-31&status=approved&listingType=apartment",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"images",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-12-31"
+								},
+								{
+									"key": "status",
+									"value": "approved"
+								},
+								{
+									"key": "listingType",
+									"value": "apartment"
+								}
+							]
+						},
+						"description": "Filter images by date range, status, listing type, etc."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🛠️ Image Utilities",
+			"item": [
+				{
+					"name": "Generate Image Thumbnails",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imageIds\": [\n    \"675abc123def456789012345\",\n    \"675abc123def456789012346\"\n  ],\n  \"sizes\": [\n    { \"width\": 150, \"height\": 150, \"name\": \"thumbnail\" },\n    { \"width\": 300, \"height\": 200, \"name\": \"small\" },\n    { \"width\": 800, \"height\": 600, \"name\": \"medium\" }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/images/generate-thumbnails",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"images",
+								"generate-thumbnails"
+							]
+						},
+						"description": "Generate different sized thumbnails for existing images"
+					},
+					"response": []
+				},
+				{
+					"name": "Optimize Images",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"listingId\": \"675abc123def456789012344\",\n  \"quality\": 85,\n  \"maxWidth\": 1920,\n  \"maxHeight\": 1080,\n  \"format\": \"webp\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/listings/{{listingId}}/images/optimize",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"listings",
+								"{{listingId}}",
+								"images",
+								"optimize"
+							]
+						},
+						"description": "Optimize all images for a listing (compress, resize, format conversion)"
+					},
+					"response": []
+				},
+				{
+					"name": "Validate Image Quality",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imageId\": \"675abc123def456789012345\",\n  \"checks\": [\n    \"resolution\",\n    \"brightness\",\n    \"blur\",\n    \"inappropriate_content\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/images/{{imageId}}/validate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"images",
+								"{{imageId}}",
+								"validate"
+							]
+						},
+						"description": "Run automated quality checks on an image"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Set dynamic timestamps for requests",
+					"pm.environment.set('timestamp', new Date().toISOString());",
+					"",
+					"// Generate unique request ID",
+					"pm.environment.set('requestId', Math.random().toString(36).substring(2, 15));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Common tests for all requests",
+					"pm.test(\"Response time is less than 5000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+					"});",
+					"",
+					"pm.test(\"Status code is successful\", function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+					"});",
+					"",
+					"// Set tokens from login responses",
+					"if (pm.response.json() && pm.response.json().token) {",
+					"    const responseJson = pm.response.json();",
+					"    if (pm.request.url.toString().includes('admin')) {",
+					"        pm.environment.set('adminToken', responseJson.token);",
+					"    } else {",
+					"        pm.environment.set('hostToken', responseJson.token);",
+					"    }",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "listingId",
+			"value": "675abc123def456789012344",
+			"type": "string",
+			"description": "Sample listing ID for testing"
+		},
+		{
+			"key": "imageId",
+			"value": "675abc123def456789012345",
+			"type": "string",
+			"description": "Sample image ID for testing"
+		},
+		{
+			"key": "hostToken",
+			"value": "",
+			"type": "string",
+			"description": "JWT token for host authentication"
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "string",
+			"description": "JWT token for admin authentication"
+		}
+	]
+}

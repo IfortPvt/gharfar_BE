@@ -1,0 +1,129 @@
+{
+  "info": {
+    "name": "Gharfar Pricing Config",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "b2e1614b-31d5-4a2a-9b66-gharfar-pricing-config"
+  },
+  "item": [
+    {
+      "name": "Global Pricing Config",
+      "item": [
+        {
+          "name": "Get Global Config",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pricing-config/global",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "pricing-config", "global"]
+            }
+          }
+        },
+        {
+          "name": "Upsert Global Config",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pricing-config/global",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "pricing-config", "global"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": true,\n  \"serviceFee\": { \"mode\": \"percentage\", \"value\": 12, \"isFree\": false },\n  \"tax\": { \"mode\": \"percentage\", \"value\": 10, \"isFree\": false },\n  \"cleaningFee\": { \"value\": 25, \"isFree\": false },\n  \"petFeePerNight\": { \"value\": 15, \"isFree\": false },\n  \"petDepositPerPet\": { \"value\": 50, \"isFree\": false },\n  \"notes\": \"Platform defaults\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Host Pricing Config",
+      "item": [
+        {
+          "name": "Get Host Config",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pricing-config/host/{{hostId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "pricing-config", "host", "{{hostId}}"]
+            }
+          }
+        },
+        {
+          "name": "Upsert Host Config",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pricing-config/host/{{hostId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "pricing-config", "host", "{{hostId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": true,\n  \"serviceFee\": { \"mode\": \"percentage\", \"value\": 8, \"isFree\": false },\n  \"tax\": { \"mode\": \"percentage\", \"value\": 0, \"isFree\": true },\n  \"cleaningFee\": { \"value\": 0, \"isFree\": true },\n  \"petFeePerNight\": { \"value\": 10, \"isFree\": false },\n  \"petDepositPerPet\": { \"value\": 0, \"isFree\": true },\n  \"notes\": \"Host overrides: service fee 8%, free tax & cleaning\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listing Pricing Config",
+      "item": [
+        {
+          "name": "Get Listing Config",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pricing-config/listing/{{listingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "pricing-config", "listing", "{{listingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Upsert Listing Config",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pricing-config/listing/{{listingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "pricing-config", "listing", "{{listingId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": true,\n  \"serviceFee\": { \"mode\": \"fixed\", \"value\": 20, \"isFree\": false },\n  \"tax\": { \"mode\": \"percentage\", \"value\": 5, \"isFree\": false },\n  \"cleaningFee\": { \"value\": 30, \"isFree\": false },\n  \"petFeePerNight\": { \"value\": 0, \"isFree\": true },\n  \"petDepositPerPet\": { \"value\": 25, \"isFree\": false },\n  \"notes\": \"Listing-specific overrides\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "adminToken", "value": "" },
+    { "key": "hostId", "value": "" },
+    { "key": "listingId", "value": "" }
+  ]
+}

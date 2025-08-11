@@ -1,0 +1,10 @@
+node_modules/
+
+*.log
+*.tmp
+.DS_Store
+.vscode/
+*.test.js
+coverage/
+.nyc_output/
+

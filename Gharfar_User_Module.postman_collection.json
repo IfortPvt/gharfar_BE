@@ -1,0 +1,162 @@
+{
+  "info": {
+    "_postman_id": "b1b2b3b4-0000-0000-0000-000000000001",
+    "name": "Gharfar User Module",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000" },
+    { "key": "auth_token", "value": "<JWT_TOKEN>" }
+  ],
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"host\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/register",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "register"]
+        }
+      }
+    },
+    {
+      "name": "Login User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users/login",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "login"]
+        }
+      }
+    },
+    {
+      "name": "Get Current User Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/users/me",
+          "host": ["{{base_url}}"],
+          "path": ["api", "users", "me"]
+        }
+      }
+    },
+    {
+      "name": "Admin: Get All Users",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/admin/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "admin", "users"]
+        }
+      }
+    },
+    {
+      "name": "Admin: Get User By ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/admin/users/<USER_ID>",
+          "host": ["{{base_url}}"],
+          "path": ["api", "admin", "users", "<USER_ID>"]
+        }
+      }
+    },
+    {
+      "name": "Admin: Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Admin User\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"admin\",\n  \"canLogin\": true,\n  \"canBook\": true,\n  \"canList\": true,\n  \"manageHosts\": true,\n  \"accessUser\": true,\n  \"manageContent\": true,\n  \"deleteListing\": true,\n  \"assignRoles\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/admin/users",
+          "host": ["{{base_url}}"],
+          "path": ["api", "admin", "users"]
+        }
+      }
+    },
+    {
+      "name": "Admin: Update User",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Updated Name\",\n  \"role\": \"host\",\n  \"canLogin\": true,\n  \"canBook\": true,\n  \"canList\": true,\n  \"manageHosts\": false,\n  \"accessUser\": false,\n  \"manageContent\": false,\n  \"deleteListing\": false,\n  \"assignRoles\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/admin/users/<USER_ID>",
+          "host": ["{{base_url}}"],
+          "path": ["api", "admin", "users", "<USER_ID>"]
+        }
+      }
+    },
+    {
+      "name": "Admin: Delete User",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/admin/users/<USER_ID>",
+          "host": ["{{base_url}}"],
+          "path": ["api", "admin", "users", "<USER_ID>"]
+        }
+      }
+    },
+    {
+      "name": "Admin: Create Admin User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Super Admin\",\n  \"email\": \"superadmin@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/admin/admins",
+          "host": ["{{base_url}}"],
+          "path": ["api", "admin", "admins"]
+        }
+      }
+    }
+  ]
+}
