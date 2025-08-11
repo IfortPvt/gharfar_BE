@@ -25,11 +25,15 @@ async function connectToDatabase() {
 }
 
 module.exports = async (req, res) => {
-  try {
-    await connectToDatabase();
-  } catch (err) {
-    console.error('MongoDB connection error:', err);
-    return res.status(500).json({ error: 'Database connection failed' });
+  const path = req.url || '';
+  const skipDb = path === '/health' || path === '/test';
+  if (!skipDb) {
+    try {
+      await connectToDatabase();
+    } catch (err) {
+      console.error('MongoDB connection error:', err);
+      return res.status(500).json({ error: 'Database connection failed' });
+    }
   }
   // Delegate to Express app; req.url contains the original path fragment
   return app(req, res);
