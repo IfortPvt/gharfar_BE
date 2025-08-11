@@ -26,7 +26,7 @@ async function connectToDatabase() {
 
 module.exports = async (req, res) => {
   const path = req.url || '';
-  const skipDb = path === '/health' || path === '/test';
+  const skipDb = path === '/health' || path === '/test' || path === '/api/health' || path === '/api/test';
   if (!skipDb) {
     try {
       await connectToDatabase();
